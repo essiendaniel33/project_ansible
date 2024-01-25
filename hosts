@@ -1,9 +1,9 @@
 [servers]
-34.201.118.208 ansible_ssh_user=ec2-user ansible_private_key_file=key     #nexus_server
-35.173.135.44  ansible_ssh_user=ec2-user ansible_private_key_file=key    #sonerqube_server
-3.84.43.115  ansible_ssh_user=ec2-user ansible_private_key_file=key    #microservice_server
-52.204.147.210 ansible_ssh_user=ec2-user ansible_private_key_file=jenkins_key   #jenkins
-44.212.54.130 ansible_ssh_user=ec2-user ansible_private_key_file=key     #monolethic_server
+54.174.135.141 ansible_ssh_user=ec2-user ansible_private_key_file=key     #nexus_server
+54.85.68.188 ansible_ssh_user=ec2-user ansible_private_key_file=key    #sonerqube_server
+107.23.252.48 ansible_ssh_user=ec2-user ansible_private_key_file=key    #microservice_server
+18.206.40.243 ansible_ssh_user=ec2-user ansible_private_key_file=jenkins_key   #jenkins
+34.239.108.176 ansible_ssh_user=ec2-user ansible_private_key_file=key     #monolethic_server
 
 [jenkins]
-52.204.147.210 ansible_ssh_user=ec2-user ansible_private_key_file=jenkins_key   #jenkins
+18.206.40.243 ansible_ssh_user=ec2-user ansible_private_key_file=jenkins_key   #jenkins
