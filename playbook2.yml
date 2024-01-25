@@ -1,0 +1,51 @@
+---
+- name: Install Docker Compose and Terraform
+  hosts: servers
+  become: yes
+  tasks:
+    - name: Download Docker Compose
+      get_url:
+        url: "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-{{ ansible_system | lower }}-{{ ansible_architecture }}"  
+        dest: /usr/local/bin/docker-compose
+        mode: '0755'
+
+- name: Install Terraform
+  hosts: jenkins
+  become: yes
+  tasks:
+    - name: Add HashiCorp repository for Terraform
+      yum_repository:
+        name: hashicorp
+        description: HashiCorp Stable - $basearch
+        baseurl: https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp/$basearch
+        gpgcheck: yes
+        enabled: yes
+        gpgkey: https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp/repodata/repomd.xml.key
+        repo_gpgcheck: yes
+
+    - name: Install Terraform
+      yum:
+        name: terraform
+        state: present
+
+- name: Install AWS CLI
+  hosts: jenkins
+  become: yes
+  tasks:
+    - name: Download AWS CLI
+      command: "curl -o /usr/local/bin/awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip creates=/usr/local/bin/awscliv2.zip"
+      args:
+        creates: /usr/local/bin/awscliv2.zip
+
+    - name: Extract and Install AWS CLI
+      ansible.builtin.unarchive:
+        src: "/usr/local/bin/awscliv2.zip"
+        dest: "/usr/local/bin"
+        remote_src: yes
+      when: "not ('/usr/local/bin/aws' is exists)"
+
+    - name: Cleanup downloaded zip file
+      file:
+        path: "/usr/local/bin/awscliv2.zip"
+        state: absent
+

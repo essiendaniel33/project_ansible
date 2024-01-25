@@ -1,0 +1,31 @@
+---
+- name: Install Java, Git, Docker and Python on servers, and Maven on jenkins
+  hosts: servers:jenkins
+  become: yes
+  tasks:
+    - name: Install Java 17
+      yum:
+        name: java-17-amazon-corretto-devel
+        state: present
+
+    - name: Install Git
+      yum:
+        name: git
+        state: present
+
+    - name: Install Docker
+      yum:
+        name: docker
+        state: present
+
+    - name: Install Python pip
+      yum:
+        name: python37
+        state: present 
+
+    - name: Install Maven
+      yum:
+        name: maven
+        state: present
+
+
