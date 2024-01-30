@@ -44,13 +44,5 @@ pipeline {
                 }
             }
         }
-
-    post {
-        success {
-            echo 'Jenkins job succeeded!'
-        }
-        failure {
-            echo 'Jenkins job failed!'
-        }
     }
-}
+} 
