@@ -1,5 +1,5 @@
 ---
-- name: Install Java, Git, Docker and Python on servers, and Maven on jenkins
+- name: Install Java, Git and Docker on servers, and Maven on jenkins
   hosts: servers:jenkins
   become: yes
   tasks:
