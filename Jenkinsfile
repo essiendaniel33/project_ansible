@@ -35,7 +35,7 @@ pipeline {
                 script {
                     def ansibleServer = '18.208.164.132'
                     def ansibleUser = 'ec2-user'
-                    def remotePath = '/home/ec2-user/project_ansible'
+                    def remotePath = 'project_ansible'
 
                     // Copy playbook1.yml
                     sshPublisher(
