@@ -32,14 +32,26 @@ pipeline {
             }
         }
 
-        stage('Run Ansible Playbook') {
+        stage('Run Ansible Playbook1') {
             steps {
                 script {
                     // Run Ansible playbook
                     ansiblePlaybook(
-                        playbook: 'paybook1.yml',
+                        playbook: 'playbook1.yml',
                         inventory: 'hosts',
                         credentialsId: ANSIBLE_CREDENTIAL
+                    )
+                }
+            }
+        }
+        stage('Run Ansible Playbook2') {
+            steps {
+                script {
+                    // Run Ansible playbook
+                    ansiblePlaybook(
+                        playbook: 'playbook2.yml',
+                        inventory: 'hosts',
+                        credentialsId: ANSIBLE_CRED_JENKINS
                     )
                 }
             }
