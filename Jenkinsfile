@@ -39,7 +39,7 @@ pipeline {
                     ansiblePlaybook(
                         playbook: 'playbook1.yml',
                         inventory: 'hosts',
-                        credentialsId: ANSIBLE_CREDENTIAL
+                        credentialsId: 'private_key'
                     )
                 }
             }
