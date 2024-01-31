@@ -37,8 +37,8 @@ pipeline {
                 script {
                     // Run Ansible playbook
                     ansiblePlaybook(
-                        playbook: '/home/ec2-user/project_ansible/playbook1.yml',
-                        inventory: '/home/ec2-user/project_ansible/hosts',
+                        playbook: 'paybook1.yml',
+                        inventory: 'hosts',
                         credentialsId: ANSIBLE_CREDENTIAL
                     )
                 }
