@@ -28,7 +28,8 @@ pipeline {
             }
         }
     }
-    stage('Deploy To Remote Server') {
+    stages {
+        stage('Deploy To Remote Server') {
             steps {
                 script {
                    def deployCommand = '''
@@ -60,5 +61,5 @@ services:
             }
         }
     }
-
+}
         
