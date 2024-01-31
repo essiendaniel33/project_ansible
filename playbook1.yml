@@ -1,7 +1,8 @@
----
-- name: Install Java, Git, Docker and Python on servers, and Maven on jenkins
+- name: Install Java, Git, Docker and Python on servers, and Maven on Jenkins
   hosts: servers:jenkins
   become: yes
+  vars:
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
   tasks:
     - name: Install Java 17
       yum:
@@ -27,5 +28,3 @@
       yum:
         name: maven
         state: present
-
-
