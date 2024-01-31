@@ -6,7 +6,6 @@ pipeline {
         string(name: 'GITHUB_REPO_URL', defaultValue: 'https://github.com/essiendaniel33/project_ansible.git', description: 'Github repository url')
         string(name: 'GITHUB_BRANCH', defaultValue: 'master', description: 'Github branch for your build')
         string(name: 'REMOTE_USER', defaultValue: 'ec2-user', description: 'Remote server username')
-        string(name: 'REMOTE_PATH', defaultValue: '/home/ec2-user/project_ansible', description: 'Remote path')
     }
 
     environment {
@@ -14,7 +13,6 @@ pipeline {
         GITHUB_REPO_URL = "${params.GITHUB_REPO_URL}"
         GITHUB_BRANCH = "${params.GITHUB_BRANCH}"
         REMOTE_USER = "${params.REMOTE_USER}"
-        REMOTE_PATH = "${params.REMOTE_PATH}"
     }
     
     
@@ -34,7 +32,7 @@ pipeline {
             steps {
                 script {
                     def ansibleServer = '18.208.164.132'
-                    def ansibleUser = 'jenkins'
+                    def ansibleUser = 'ec2-user'
                     def remotePath = 'project_ansible'
 
                     // Copy playbook1.yml
