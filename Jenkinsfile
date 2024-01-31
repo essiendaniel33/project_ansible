@@ -6,6 +6,7 @@ pipeline {
         string(name: 'GITHUB_REPO_URL', defaultValue: 'https://github.com/essiendaniel33/project_ansible.git', description: 'Github repository url')
         string(name: 'GITHUB_BRANCH', defaultValue: 'master', description: 'Github branch for your build')
         string(name: 'REMOTE_USER', defaultValue: 'ec2-user', description: 'Remote server username')
+        string(name: 'REMOTE_PATH', defaultValue: '/home/ec2-user/project_ansible', description: 'Remote path')
     }
 
     environment {
@@ -13,6 +14,7 @@ pipeline {
         GITHUB_REPO_URL = "${params.GITHUB_REPO_URL}"
         GITHUB_BRANCH = "${params.GITHUB_BRANCH}"
         REMOTE_USER = "${params.REMOTE_USER}"
+        REMOTE_PATH = "${params.REMOTE_PATH}"
     }
     
     
@@ -27,7 +29,69 @@ pipeline {
                 }
             }
         }
-        
+
+        stage('copy ansible files') {
+            steps {
+                script {
+                    // Copy ansible files from workspace to the ansible server
+                    // Copy playbook1.yml
+                    sshPublisher(
+                        continueOnError: false, 
+                        failOnError: true,
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: 'deployment',
+                                transfers: [
+                                    sshTransfer(
+                                        sourceFiles: 'playbook1.yml',
+                                        removePrefix: '',
+                                        remoteDirectory: "${params.REMOTE_PATH}"
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+
+                    // Copy playbook2.yml
+                    sshPublisher(
+                        continueOnError: false, 
+                        failOnError: true,
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: 'deployment',
+                                transfers: [
+                                    sshTransfer(
+                                        sourceFiles: 'playbook2.yml',
+                                        removePrefix: '',
+                                        remoteDirectory: "${params.REMOTE_PATH}"
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+
+                    // Copy hosts file
+                    sshPublisher(
+                        continueOnError: false, 
+                        failOnError: true,
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: 'deployment',
+                                transfers: [
+                                    sshTransfer(
+                                        sourceFiles: 'hosts',
+                                        removePrefix: '',
+                                        remoteDirectory: "${params.REMOTE_PATH}"
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+                }
+            }
+        }                
+       
+            
         stage('Deploy To Remote Server') {
             steps {
                 script {
