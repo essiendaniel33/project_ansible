@@ -34,7 +34,7 @@ pipeline {
             steps {
                 script {
                     def ansibleServer = '18.208.164.132'
-                    def ansibleUser = 'ec2-user'
+                    def ansibleUser = 'jenkins'
                     def remotePath = 'project_ansible'
 
                     // Copy playbook1.yml
