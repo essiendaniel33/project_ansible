@@ -28,7 +28,7 @@ pipeline {
             }
         }
     }
-    stages {
+    
         stage('Deploy To Remote Server') {
             steps {
                 script {
@@ -61,5 +61,5 @@ services:
             }
         }
     }
-}
+
         
