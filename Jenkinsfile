@@ -37,6 +37,7 @@ pipeline {
                     def ansibleUser = 'ec2-user' 
                     def remotePath = '/home/ec2-user/project_ansible'
                     def gitRepoURL = 'https://github.com/essiendaniel33/project_ansible.git' 
+                    def deployCommand = "scp -i $JENKINS_HOME"
                     
                     // Checkout the repository
                     checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: gitRepoURL]]])
