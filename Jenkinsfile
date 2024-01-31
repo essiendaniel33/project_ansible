@@ -32,8 +32,7 @@ pipeline {
             steps {
                 script {
                    def deployCommand = '''
-services:
-    cd /home/${REMOTE_USER}/project_ansible/
+    cd /home/${REMOTE_USER}/project_ansible
     ansible-playbook -i hosts playbook1.yml playbook2.yml
 '''
 
