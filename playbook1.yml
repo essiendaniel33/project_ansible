@@ -18,11 +18,6 @@
         name: docker
         state: present
 
-    - name: Install Python pip
-      yum:
-        name: python37
-        state: present 
-
     - name: Install Maven
       yum:
         name: maven
