@@ -1,6 +1,6 @@
 ---
-- name: Install Java, Git, and Docker on servers; Maven on Jenkins
-  hosts: servers:jenkins
+- name: Install Java, Git, and Docker on servers
+  hosts: servers
   become: yes
   tasks:
     - name: Install Java 17
@@ -20,8 +20,4 @@
         state: present
       when: "'debian' in ansible_os_family"
 
-    - name: Install Maven
-      hosts: Jenkins
-      package:
-        name: maven
-        state: present
+    
