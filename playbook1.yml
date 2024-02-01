@@ -3,33 +3,20 @@
   hosts: servers:jenkins
   become: yes
   tasks:
-    - name: Install Java 17 on Amazon Linux
-      when: "'amazon' in ansible_distribution.lower()"
-      yum:
+    - name: Install Java 17
+      package:
         name: java-17-amazon-corretto-devel
         state: present
-
-    - name: Install OpenJDK 17 on Ubuntu
-      when: "'ubuntu' in ansible_distribution.lower()"
-      apt:
-        name: openjdk-17-jdk
-        state: present
+      when: "'amazon' in ansible_os_family"
 
     - name: Install Git
       package:
         name: git
         state: present
 
-    - name: Install Docker on Amazon Linux
-      when: "'amazon' in ansible_distribution.lower()"
-      yum:
+    - name: Install Docker
+      package:
         name: docker
-        state: present
-
-    - name: Install Docker on Ubuntu
-      when: "'ubuntu' in ansible_distribution.lower()"
-      apt:
-        name: docker.io
         state: present
 
     - name: Install Maven
