@@ -7,14 +7,12 @@
       ansible.builtin.package:
         name: openjdk-17-jdk
         state: present
-        pkg_mgr: apt
       when: ansible_os_family == 'Debian'
 
     - name: Install OpenJDK 17 on Amazon Linux
       ansible.builtin.package:
         name: java-17-amazon-corretto-devel
         state: present
-        pkg_mgr: yum
       when: ansible_os_family == 'Amazon'
 
     - name: Install Git
