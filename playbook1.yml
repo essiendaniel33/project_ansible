@@ -3,21 +3,33 @@
   hosts: servers
   become: yes
   tasks:
-    - name: Install Java 17
-      package:
+    - name: Install OpenJDK 17 on Ubuntu
+      ansible.builtin.package:
+        name: openjdk-17-jdk
+        state: present
+        pkg_mgr: apt
+      when: ansible_os_family == 'Debian'
+
+    - name: Install OpenJDK 17 on Amazon Linux
+      ansible.builtin.package:
         name: java-17-amazon-corretto-devel
         state: present
-      when: "'amazon' in ansible_os_family"
+        pkg_mgr: yum
+      when: ansible_os_family == 'Amazon'
 
     - name: Install Git
-      package:
+      ansible.builtin.package:
         name: git
         state: present
 
     - name: Install Docker on Ubuntu
-      package:
+      ansible.builtin.package:
         name: docker.io
         state: present
-      when: "'debian' in ansible_os_family"
+      when: ansible_os_family == 'Debian'
 
-    
+    - name: Install Docker on Amazon Linux
+      ansible.builtin.package:
+        name: docker
+        state: present
+      when: ansible_os_family == 'Amazon'
