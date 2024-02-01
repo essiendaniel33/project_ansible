@@ -1,33 +1,27 @@
 ---
-- name: Install Java, Git, and Docker on servers
+- name: Install Java, Git, and Docker on Ubuntu servers
   hosts: servers
   become: yes
   tasks:
-    - name: Install OpenJDK 17 on Ubuntu
+    - name: Add OpenJDK PPA repository
+      ansible.builtin.apt_repository:
+        repo: ppa:openjdk-r/ppa
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Install OpenJDK 17
       ansible.builtin.package:
         name: openjdk-17-jdk
         state: present
       when: ansible_os_family == 'Debian'
-
-    - name: Install OpenJDK 17 on Amazon Linux
-      ansible.builtin.package:
-        name: java-17-amazon-corretto-devel
-        state: present
-      when: ansible_os_family == 'Amazon'
 
     - name: Install Git
       ansible.builtin.package:
         name: git
         state: present
 
-    - name: Install Docker on Ubuntu
+    - name: Install Docker
       ansible.builtin.package:
         name: docker.io
         state: present
       when: ansible_os_family == 'Debian'
-
-    - name: Install Docker on Amazon Linux
-      ansible.builtin.package:
-        name: docker
-        state: present
-      when: ansible_os_family == 'Amazon'
