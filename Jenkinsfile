@@ -134,7 +134,7 @@ pipeline {
                 script {
                    def deployCommand = '''
     cd /home/ec2-user/ec2-user/project_ansible
-    ansible-playbook -i hosts nexus.yml sonar.yml
+    ansible-playbook -i hosts playbook1.yml playbook2.yml nexus.yml sonar.yml
 '''
 
                     sshPublisher(publishers: [sshPublisherDesc(
