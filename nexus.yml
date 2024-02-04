@@ -1,0 +1,96 @@
+---
+- name: Deploy Nexus Repository Manager on Ubuntu
+  hosts: nexus
+  become: yes
+
+  tasks:
+    - name: Ensure Docker daemon is running      
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Start and enable Docker daemon       
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Create Docker Compose file
+      ansible.builtin.copy:
+        content: |
+          version: "3"
+          services:
+            nexus:
+              image: sonatype/nexus3
+              restart: always
+              volumes:
+                - "nexus-data:/sonatype-work"
+              ports:
+                - "8081:8081"
+                - "8085:8085"
+          volumes:
+            nexus-data: {}
+        dest: "/home/ubuntu/docker-compose.yml"
+      become_user: ubuntu
+
+    - name: Run Docker Compose
+      ansible.builtin.shell:
+        cmd: "docker-compose start -d"
+      become: yes
+      become_user: ubuntu
+
+    - name: Install firewalld on systemd systems
+      ansible.builtin.package:
+        name: firewalld
+        state: present
+      become: yes
+      when: "'systemd' in ansible_service_mgr"
+
+    - name: Start and enable firewalld on systemd systems
+      ansible.builtin.service:
+        name: firewalld
+        state: started
+        enabled: yes
+      become: yes
+      when: "'systemd' in ansible_service_mgr"
+
+    - name: Install firewalld on systemd systems
+      apt:
+        name: firewalld
+        state: present
+      when: ansible_service_mgr == 'systemd'
+
+    - name: Start firewalld on systemd systems
+      systemd:
+        name: firewalld
+        state: started
+      when: ansible_service_mgr == 'systemd'
+
+    - name: Reload firewalld
+      ansible.builtin.systemd:
+        name: firewalld
+        state: restarted
+      become: yes
+      become_user: root
+      register: restart_firewalld
+
+    - name: Wait for Nexus to start
+      ansible.builtin.wait_for:
+        port: 8081
+        timeout: 300
+
+    - name: Get Nexus container ID
+      ansible.builtin.shell:
+        cmd: "sudo docker ps -qf name=nexus"
+      become_user: ubuntu
+      register: nexus_container_id
+
+    - name: Show Nexus credentials
+      ansible.builtin.shell:
+        cmd: "sudo docker exec -it {{ nexus_container_id.stdout }} /bin/bash -c 'cat /nexus-data/admin.password'"
+      become_user: ubuntu
+      register: nexus_credentials_result
+
+    - debug:
+        var: nexus_credentials_result.stdout_lines
