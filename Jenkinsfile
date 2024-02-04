@@ -31,7 +31,7 @@ pipeline {
         stage('copy ansible files') {
             steps {
                 script {
-                    def ansibleServer = '44.204.185.157'
+                    def ansibleServer = '54.163.42.96'
                     def ansibleUser = 'ec2-user'
                     def remotePath = 'ec2-user/project_ansible'
 
@@ -71,6 +71,42 @@ pipeline {
                         ]
                     )
 
+                    // Copy nexus.yml
+                    sshPublisher(
+                        continueOnError: false,
+                        failOnError: true,
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: 'deployment',
+                                transfers: [
+                                    sshTransfer(
+                                        sourceFiles: 'nexus.yml',
+                                        removePrefix: '',
+                                        remoteDirectory: "${remotePath}/"
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+
+                    // Copy sonar.yml
+                    sshPublisher(
+                        continueOnError: false,
+                        failOnError: true,
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: 'deployment',
+                                transfers: [
+                                    sshTransfer(
+                                        sourceFiles: 'sonar.yml',
+                                        removePrefix: '',
+                                        remoteDirectory: "${remotePath}/"
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+
                     // Copy hosts file
                     sshPublisher(
                         continueOnError: false,
@@ -98,7 +134,7 @@ pipeline {
                 script {
                    def deployCommand = '''
     cd /home/ec2-user/ec2-user/project_ansible
-    ansible-playbook -i hosts playbook1.yml playbook2.yml
+    ansible-playbook -i hosts playbook1.yml playbook2.yml nexus.yml sonar.yml
 '''
 
                     sshPublisher(publishers: [sshPublisherDesc(
