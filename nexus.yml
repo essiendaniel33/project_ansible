@@ -86,11 +86,11 @@
       become_user: ubuntu
       register: nexus_container_id
 
-    - name: Show Nexus credentials
-      ansible.builtin.shell:
-        cmd: "sudo docker exec -it {{ nexus_container_id.stdout }} /bin/bash -c 'cat /nexus-data/admin.password'"
-      become_user: ubuntu
-      register: nexus_credentials_result
+#    - name: Show Nexus credentials
+#      ansible.builtin.shell:
+#        cmd: "sudo docker exec -it {{ nexus_container_id.stdout }} /bin/bash -c 'cat /nexus-data/admin.password'"
+#      become_user: ubuntu
+#      register: nexus_credentials_result
 
-    - debug:
-        var: nexus_credentials_result.stdout_lines
+#    - debug:
+#        var: nexus_credentials_result.stdout_lines
